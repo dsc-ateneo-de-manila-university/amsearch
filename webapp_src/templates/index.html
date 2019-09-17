@@ -1,0 +1,62 @@
+{% from "_formhelpers.html" import render_field %}
+<!DOCTYPE html>
+<html style="height:100vh">
+  <head>
+    <title>AMSearch</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+
+  </head>
+  <body>
+    <div class="container align-items-center">
+
+      <div class="row align-items-center"
+           style="margin-top:{{30 if res|length == 0 else 3}}vh;
+                  margin-bottom:3vh">
+        {% if res|length == 0 %}
+        <div class="col-sm"> </div>
+        <div class="col-auto">
+          <img src="static/ams_banner.png" alt="AMS Banner" style="width:25vw;">
+        </div>
+        <div class="col-sm"> </div>
+        {% endif %}
+      </div>
+
+      <div class="row align-items-center">
+        <div class="col-sm"> </div>
+        {% if res|length > 0 %}
+        <div class="col-auto">
+          <a href={{url_for('index')}} style="color:black"> AMSearch </a>
+        </div>
+        {% endif %}
+        <div class="col-auto">
+          <form method="POST" action="/search", style="color:black">
+            {{ form.csrf_token }}
+            <div class="form-row align-items-center">
+              <div class="col-auto">
+                {{ render_field(form.search_query, size="50vw", class="form-control") }}
+              </div>
+              <div class="col-auto">
+                <input type="submit" value="Search" class="btn btn-light border">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-sm"> </div>
+      </div>
+    </div>
+
+    {% for i in range(res|length) %}
+      <div class="card border-0" style="width:95vw;">
+        <div class="card-body pb-0">
+          <h6 class="card-title mb-0">
+            <a href={{ res[i][-3] }}> {{ res[i][-2] }} </a>
+            <br />
+          </h6>
+          <p class="card-text"> {{res[i][-1]}} </p>
+        </div>
+      </div>
+    {% endfor %}
+  </body>
+</html>
